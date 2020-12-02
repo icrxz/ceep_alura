@@ -1,6 +1,10 @@
 import React from "react";
+
 import ListaDeNotas from "./components/ListaDeNotas";
+import ListaDeCategorias from "./components/ListaDeCategorias";
 import FormularioCadastro from "./components/FormularioCadastro";
+import NotesArray from "./data/notes";
+import Categories from "./data/categories";
 
 import "./assets/App.css";
 import "./assets/index.css";
@@ -8,33 +12,23 @@ import "./assets/index.css";
 class App extends React.Component {
   constructor() {
     super();
-    
-    this.state = {
-      notes: [],
-    };
-  }
-
-  createNote(title, content) {
-    console.log(`nova nota criada - ${title}: ${content}`);
-    const newNote = {
-      title,
-      text: content,
-    };
-    const newNotesArray = [...this.state.notes, newNote]
-
-    const newState = {
-      notes: newNotesArray
-    };
-
-    this.setState(newState)
+    this.categories = new Categories();
+    this.notes = new NotesArray();
   }
 
   render() {
     return (
       <div className="conteudo">
-        <FormularioCadastro createNote={this.createNote.bind(this)} />
+        <FormularioCadastro
+          createNote={this.notes.addNote.bind(this.notes)}
+          categories={this.categories}
+        />
 
-        <ListaDeNotas notes={this.state.notes} />
+        <main className="conteudo-principal">
+          <ListaDeCategorias categories={this.categories} />
+
+          <ListaDeNotas notes={this.notes} />
+        </main>
       </div>
     );
   }
